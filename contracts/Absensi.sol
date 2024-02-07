@@ -29,8 +29,12 @@ contract Absensi {
         emit MahasiswaAdded(_mahasiswa);
     }
 
-    // event NamaMahasiswaUpdated();
-    // function setNamaMahasiswa() {}
+    event NamaMahasiswaUpdated(address mahasiswa, string nama);
+    function setNamaMahasiswa(address _mahasiswa, string memory _nama) public {
+        if (msg.sender != owner) revert OnlyForOwner();
+        mahasiswa[_mahasiswa].nama = _nama;
+        emit NamaMahasiswaUpdated(_mahasiswa, mahasiswa[_mahasiswa].nama);
+    }
 
     // event NimMahasiswaUpdated(); tidak usah dikerjakan
     // function setNimMahasiswa() {} tidak usah dikerjakan

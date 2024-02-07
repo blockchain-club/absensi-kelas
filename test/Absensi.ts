@@ -29,7 +29,7 @@ describe("Absensi Contract", function () {
     return { absensi, dosen, alice, bob };
   }
 
-  describe("AddMahasiswa", function () {
+  describe("Add Mahasiswa", function () {
     it("should return no error when dosen add mahasiswa", async function () {
       const { absensi, dosen, alice, bob } = await loadFixture(deploy);
       await expect(absensi.connect(dosen).addMahasiswa(alice.address, "123", "Alice")).to.not.be.reverted;
@@ -78,15 +78,26 @@ describe("Absensi Contract", function () {
   describe("Set Nama Mahasiwa", function () {
     it("should return no error when dosen set nama mahasiswa", async function () {
       const { absensi, dosen, alice, bob } = await loadFixture(namaMahasiswaAdded);
-      // await absensi.setNamaMahasiwa();
+      await expect(absensi.connect(dosen).setNamaMahasiswa(alice.address, "Alice Wonderland")).to.not.be.reverted;
     });
 
     it("should return error when non-dosen set nama mahasiswa", async function () {
-      
+      const { absensi, dosen, alice, bob } = await loadFixture(namaMahasiswaAdded);
+      await expect(absensi.connect(alice).setNamaMahasiswa(alice.address, "Alice Wonderland")).to.revertedWith("OnlyForOwner");
     });
-    it("should emit correct event after updating nama mahasiswa", async function () {});
+
+    it("should emit correct event after updating nama mahasiswa", async function () {
+      const { absensi, dosen, alice, bob } = await loadFixture(namaMahasiswaAdded);
+      await expect(absensi.connect(dosen).setNamaMahasiswa(alice.address, "Alice Wonderland")).to.emit(absensi, "NamaMahasiswaUpdated").withNamedArgs({
+        mahasiswa: alice.address,
+        nama: "Alice Wonderland"
+      });
+    });
+
     it("should return updated nama mahasiswa", async function () {
-      // getNamaMahasiswa();
+      const { absensi, dosen, alice, bob } = await loadFixture(namaMahasiswaAdded);
+      await absensi.setNamaMahasiswa(alice.address, "Alice Wonderland");
+      expect(await absensi.getNamaMahasiswa(alice.address)).equal("Alice Wonderland");
     });
   });
 

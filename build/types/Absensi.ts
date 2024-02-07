@@ -33,6 +33,7 @@ export interface AbsensiInterface extends utils.Interface {
     "getNimMahasiswa(address)": FunctionFragment;
     "mahasiswa(address)": FunctionFragment;
     "owner()": FunctionFragment;
+    "setNamaMahasiswa(address,string)": FunctionFragment;
   };
 
   getFunction(
@@ -42,6 +43,7 @@ export interface AbsensiInterface extends utils.Interface {
       | "getNimMahasiswa"
       | "mahasiswa"
       | "owner"
+      | "setNamaMahasiswa"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -65,6 +67,10 @@ export interface AbsensiInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "setNamaMahasiswa",
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "addMahasiswa",
@@ -80,12 +86,18 @@ export interface AbsensiInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "mahasiswa", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setNamaMahasiswa",
+    data: BytesLike
+  ): Result;
 
   events: {
     "MahasiswaAdded(address)": EventFragment;
+    "NamaMahasiswaUpdated(address,string)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "MahasiswaAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NamaMahasiswaUpdated"): EventFragment;
 }
 
 export interface MahasiswaAddedEventObject {
@@ -97,6 +109,18 @@ export type MahasiswaAddedEvent = TypedEvent<
 >;
 
 export type MahasiswaAddedEventFilter = TypedEventFilter<MahasiswaAddedEvent>;
+
+export interface NamaMahasiswaUpdatedEventObject {
+  mahasiswa: string;
+  nama: string;
+}
+export type NamaMahasiswaUpdatedEvent = TypedEvent<
+  [string, string],
+  NamaMahasiswaUpdatedEventObject
+>;
+
+export type NamaMahasiswaUpdatedEventFilter =
+  TypedEventFilter<NamaMahasiswaUpdatedEvent>;
 
 export interface Absensi extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -150,6 +174,12 @@ export interface Absensi extends BaseContract {
     >;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
+
+    setNamaMahasiswa(
+      _mahasiswa: PromiseOrValue<string>,
+      _nama: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   addMahasiswa(
@@ -178,6 +208,12 @@ export interface Absensi extends BaseContract {
 
   owner(overrides?: CallOverrides): Promise<string>;
 
+  setNamaMahasiswa(
+    _mahasiswa: PromiseOrValue<string>,
+    _nama: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     addMahasiswa(
       _mahasiswa: PromiseOrValue<string>,
@@ -204,11 +240,26 @@ export interface Absensi extends BaseContract {
     >;
 
     owner(overrides?: CallOverrides): Promise<string>;
+
+    setNamaMahasiswa(
+      _mahasiswa: PromiseOrValue<string>,
+      _nama: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
     "MahasiswaAdded(address)"(mahasiswa?: null): MahasiswaAddedEventFilter;
     MahasiswaAdded(mahasiswa?: null): MahasiswaAddedEventFilter;
+
+    "NamaMahasiswaUpdated(address,string)"(
+      mahasiswa?: null,
+      nama?: null
+    ): NamaMahasiswaUpdatedEventFilter;
+    NamaMahasiswaUpdated(
+      mahasiswa?: null,
+      nama?: null
+    ): NamaMahasiswaUpdatedEventFilter;
   };
 
   estimateGas: {
@@ -235,6 +286,12 @@ export interface Absensi extends BaseContract {
     ): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setNamaMahasiswa(
+      _mahasiswa: PromiseOrValue<string>,
+      _nama: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -261,5 +318,11 @@ export interface Absensi extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    setNamaMahasiswa(
+      _mahasiswa: PromiseOrValue<string>,
+      _nama: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
   };
 }
