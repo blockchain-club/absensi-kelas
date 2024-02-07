@@ -25,8 +25,8 @@ import type {
 export interface AbsensiInterface extends utils.Interface {
   functions: {
     "addMahasiswa(address,string,string)": FunctionFragment;
-    "getMahasiswaNIM(address)": FunctionFragment;
-    "getMahasiswaName(address)": FunctionFragment;
+    "getNamaMahasiswa(address)": FunctionFragment;
+    "getNimMahasiswa(address)": FunctionFragment;
     "mahasiswa(address)": FunctionFragment;
     "owner()": FunctionFragment;
   };
@@ -34,8 +34,8 @@ export interface AbsensiInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "addMahasiswa"
-      | "getMahasiswaNIM"
-      | "getMahasiswaName"
+      | "getNamaMahasiswa"
+      | "getNimMahasiswa"
       | "mahasiswa"
       | "owner"
   ): FunctionFragment;
@@ -49,11 +49,11 @@ export interface AbsensiInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "getMahasiswaNIM",
+    functionFragment: "getNamaMahasiswa",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getMahasiswaName",
+    functionFragment: "getNimMahasiswa",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
@@ -67,11 +67,11 @@ export interface AbsensiInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getMahasiswaNIM",
+    functionFragment: "getNamaMahasiswa",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getMahasiswaName",
+    functionFragment: "getNimMahasiswa",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "mahasiswa", data: BytesLike): Result;
@@ -114,12 +114,12 @@ export interface Absensi extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    getMahasiswaNIM(
+    getNamaMahasiswa(
       _mahasiswa: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    getMahasiswaName(
+    getNimMahasiswa(
       _mahasiswa: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[string]>;
@@ -127,7 +127,9 @@ export interface Absensi extends BaseContract {
     mahasiswa(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<[string, string] & { nim: string; nama: string }>;
+    ): Promise<
+      [string, string, boolean] & { nim: string; nama: string; exist: boolean }
+    >;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
   };
@@ -139,12 +141,12 @@ export interface Absensi extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  getMahasiswaNIM(
+  getNamaMahasiswa(
     _mahasiswa: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<string>;
 
-  getMahasiswaName(
+  getNimMahasiswa(
     _mahasiswa: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<string>;
@@ -152,7 +154,9 @@ export interface Absensi extends BaseContract {
   mahasiswa(
     arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
-  ): Promise<[string, string] & { nim: string; nama: string }>;
+  ): Promise<
+    [string, string, boolean] & { nim: string; nama: string; exist: boolean }
+  >;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
@@ -164,12 +168,12 @@ export interface Absensi extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    getMahasiswaNIM(
+    getNamaMahasiswa(
       _mahasiswa: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<string>;
 
-    getMahasiswaName(
+    getNimMahasiswa(
       _mahasiswa: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<string>;
@@ -177,7 +181,9 @@ export interface Absensi extends BaseContract {
     mahasiswa(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<[string, string] & { nim: string; nama: string }>;
+    ): Promise<
+      [string, string, boolean] & { nim: string; nama: string; exist: boolean }
+    >;
 
     owner(overrides?: CallOverrides): Promise<string>;
   };
@@ -192,12 +198,12 @@ export interface Absensi extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    getMahasiswaNIM(
+    getNamaMahasiswa(
       _mahasiswa: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getMahasiswaName(
+    getNimMahasiswa(
       _mahasiswa: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -218,12 +224,12 @@ export interface Absensi extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    getMahasiswaNIM(
+    getNamaMahasiswa(
       _mahasiswa: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getMahasiswaName(
+    getNimMahasiswa(
       _mahasiswa: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

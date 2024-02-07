@@ -7,6 +7,7 @@ contract Absensi {
     struct Mahasiswa {
         string nim;
         string nama;
+        bool exist;
     }
 
     mapping(address => Mahasiswa) public mahasiswa;
@@ -15,16 +16,21 @@ contract Absensi {
         owner = msg.sender;
     }
 
+    error OnlyForOwner();
+    error MahasiswaNotFound();
+
     function addMahasiswa(address _mahasiswa, string memory _nim, string memory _nama) public {
-        Mahasiswa memory m = Mahasiswa(_nim, _nama);
-        mahasiswa[_mahasiswa] = m;
+        if (msg.sender != owner) revert OnlyForOwner();
+        mahasiswa[_mahasiswa] = Mahasiswa(_nim, _nama, true);
     }
 
-    function getMahasiswaNIM(address _mahasiswa) public view returns (string memory) {
+    function getNimMahasiswa(address _mahasiswa) public view returns (string memory) {
+        if (mahasiswa[_mahasiswa].exist == false) revert MahasiswaNotFound();
         return mahasiswa[_mahasiswa].nim;
     }
 
-    function getMahasiswaName(address _mahasiswa) public view returns (string memory) {
+    function getNamaMahasiswa(address _mahasiswa) public view returns (string memory) {
+        if (mahasiswa[_mahasiswa].exist == false) revert MahasiswaNotFound();
         return mahasiswa[_mahasiswa].nama;
     }
 }

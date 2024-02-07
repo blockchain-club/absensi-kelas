@@ -20,9 +20,44 @@ describe("Absensi Contract", function () {
     });
   });
 
-  describe("AddMahasiswa", function () {
-    it("should add mahasiswa successfully", async function () {
+  async function deploy() {
+    const [dosen, alice, bob] = await ethers.getSigners();
       
+    const absensiContract = await ethers.getContractFactory("Absensi");
+    const absensi = await absensiContract.connect(dosen).deploy();
+    
+    return { absensi, dosen, alice, bob };
+  }
+
+  describe("AddMahasiswa", function () {
+    it("should return no error when dosen add mahasiswa", async function () {
+      const { absensi, dosen, alice, bob } = await deploy();
+      await expect(absensi.connect(dosen).addMahasiswa(alice.address, "123", "Alice")).to.not.be.reverted;
+    });
+
+    it("should be reverted when non-dosen add mahasiswa", async function () {
+      const { absensi, dosen, alice, bob } = await deploy();
+      await expect(absensi.connect(bob).addMahasiswa(alice.address, "123", "Alice")).to.revertedWith("OnlyForOwner");
+    });
+
+    it("should return correct nama mahasiswa", async function () {
+      const { absensi, dosen, alice, bob } = await deploy();
+      await absensi.addMahasiswa(alice.address, "123", "Alice");
+
+      const storedNama = await absensi.getNamaMahasiswa(alice.address);
+      expect(storedNama).equal("Alice");
+
+      await expect(absensi.getNamaMahasiswa(bob.address)).to.revertedWith("MahasiswaNotFound");
+    });
+
+    it("should return correct nim mahasiswa", async function () {
+      const { absensi, dosen, alice, bob } = await deploy();
+      await absensi.addMahasiswa(alice.address, "123", "Alice");
+
+      const aliceNim = await absensi.getNimMahasiswa(alice.address);
+      expect(aliceNim).equal("123");
+
+      await expect(absensi.getNimMahasiswa(bob.address)).to.revertedWith("MahasiswaNotFound");
     });
   });
 });
