@@ -12,7 +12,11 @@ import type {
   Signer,
   utils,
 } from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -77,8 +81,22 @@ export interface AbsensiInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "mahasiswa", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
 
-  events: {};
+  events: {
+    "MahasiswaAdded(address)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "MahasiswaAdded"): EventFragment;
 }
+
+export interface MahasiswaAddedEventObject {
+  mahasiswa: string;
+}
+export type MahasiswaAddedEvent = TypedEvent<
+  [string],
+  MahasiswaAddedEventObject
+>;
+
+export type MahasiswaAddedEventFilter = TypedEventFilter<MahasiswaAddedEvent>;
 
 export interface Absensi extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -188,7 +206,10 @@ export interface Absensi extends BaseContract {
     owner(overrides?: CallOverrides): Promise<string>;
   };
 
-  filters: {};
+  filters: {
+    "MahasiswaAdded(address)"(mahasiswa?: null): MahasiswaAddedEventFilter;
+    MahasiswaAdded(mahasiswa?: null): MahasiswaAddedEventFilter;
+  };
 
   estimateGas: {
     addMahasiswa(

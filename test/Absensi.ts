@@ -40,6 +40,14 @@ describe("Absensi Contract", function () {
       await expect(absensi.connect(bob).addMahasiswa(alice.address, "123", "Alice")).to.revertedWith("OnlyForOwner");
     });
 
+    it("should return correct event after adding mahasiswa", async function () {
+      const { absensi, dosen, alice, bob } = await deploy();
+      await expect(absensi.addMahasiswa(alice.address, "123", "Alice")).to.emit(absensi, "MahasiswaAdded");
+      await expect(absensi.addMahasiswa(alice.address, "123", "Alice")).to.emit(absensi, "MahasiswaAdded").withNamedArgs({
+        mahasiswa: alice.address
+      });
+    });
+
     it("should return correct nama mahasiswa", async function () {
       const { absensi, dosen, alice, bob } = await deploy();
       await absensi.addMahasiswa(alice.address, "123", "Alice");

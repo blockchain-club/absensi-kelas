@@ -16,12 +16,15 @@ contract Absensi {
         owner = msg.sender;
     }
 
+    event MahasiswaAdded(address mahasiswa);
+
     error OnlyForOwner();
     error MahasiswaNotFound();
 
     function addMahasiswa(address _mahasiswa, string memory _nim, string memory _nama) public {
         if (msg.sender != owner) revert OnlyForOwner();
         mahasiswa[_mahasiswa] = Mahasiswa(_nim, _nama, true);
+        emit MahasiswaAdded(_mahasiswa);
     }
 
     function getNimMahasiswa(address _mahasiswa) public view returns (string memory) {
