@@ -31,17 +31,17 @@ describe("Absensi Contract", function () {
 
   describe("AddMahasiswa", function () {
     it("should return no error when dosen add mahasiswa", async function () {
-      const { absensi, dosen, alice, bob } = await deploy();
+      const { absensi, dosen, alice, bob } = await loadFixture(deploy);
       await expect(absensi.connect(dosen).addMahasiswa(alice.address, "123", "Alice")).to.not.be.reverted;
     });
 
     it("should be reverted when non-dosen add mahasiswa", async function () {
-      const { absensi, dosen, alice, bob } = await deploy();
+      const { absensi, dosen, alice, bob } = await loadFixture(deploy);
       await expect(absensi.connect(bob).addMahasiswa(alice.address, "123", "Alice")).to.revertedWith("OnlyForOwner");
     });
 
     it("should return correct event after adding mahasiswa", async function () {
-      const { absensi, dosen, alice, bob } = await deploy();
+      const { absensi, dosen, alice, bob } = await loadFixture(deploy);
       await expect(absensi.addMahasiswa(alice.address, "123", "Alice")).to.emit(absensi, "MahasiswaAdded");
       await expect(absensi.addMahasiswa(alice.address, "123", "Alice")).to.emit(absensi, "MahasiswaAdded").withNamedArgs({
         mahasiswa: alice.address
@@ -49,7 +49,7 @@ describe("Absensi Contract", function () {
     });
 
     it("should return correct nama mahasiswa", async function () {
-      const { absensi, dosen, alice, bob } = await deploy();
+      const { absensi, dosen, alice, bob } = await loadFixture(deploy);
       await absensi.addMahasiswa(alice.address, "123", "Alice");
 
       const storedNama = await absensi.getNamaMahasiswa(alice.address);
@@ -59,7 +59,7 @@ describe("Absensi Contract", function () {
     });
 
     it("should return correct nim mahasiswa", async function () {
-      const { absensi, dosen, alice, bob } = await deploy();
+      const { absensi, dosen, alice, bob } = await loadFixture(deploy);
       await absensi.addMahasiswa(alice.address, "123", "Alice");
 
       const aliceNim = await absensi.getNimMahasiswa(alice.address);
@@ -68,4 +68,28 @@ describe("Absensi Contract", function () {
       await expect(absensi.getNimMahasiswa(bob.address)).to.revertedWith("MahasiswaNotFound");
     });
   });
+
+  async function namaMahasiswaAdded() {
+    const { absensi, dosen, alice, bob } = await deploy();
+    await absensi.addMahasiswa(alice.address, "123", "Alice");
+    return { absensi, dosen, alice, bob };
+  }
+
+  describe("Set Nama Mahasiwa", function () {
+    it("should return no error when dosen set nama mahasiswa", async function () {
+      const { absensi, dosen, alice, bob } = await loadFixture(namaMahasiswaAdded);
+      // await absensi.setNamaMahasiwa();
+    });
+
+    it("should return error when non-dosen set nama mahasiswa", async function () {
+      
+    });
+    it("should emit correct event after updating nama mahasiswa", async function () {});
+    it("should return updated nama mahasiswa", async function () {
+      // getNamaMahasiswa();
+    });
+  });
+
+  // describe("Set NIM Mahasiwa", function () {}); tidak usah dikerjakan
+
 });

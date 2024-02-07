@@ -21,11 +21,19 @@ contract Absensi {
     error OnlyForOwner();
     error MahasiswaNotFound();
 
+    // CRUD = Create, Read, Update, Delete
+
     function addMahasiswa(address _mahasiswa, string memory _nim, string memory _nama) public {
         if (msg.sender != owner) revert OnlyForOwner();
         mahasiswa[_mahasiswa] = Mahasiswa(_nim, _nama, true);
         emit MahasiswaAdded(_mahasiswa);
     }
+
+    // event NamaMahasiswaUpdated();
+    // function setNamaMahasiswa() {}
+
+    // event NimMahasiswaUpdated(); tidak usah dikerjakan
+    // function setNimMahasiswa() {} tidak usah dikerjakan
 
     function getNimMahasiswa(address _mahasiswa) public view returns (string memory) {
         if (mahasiswa[_mahasiswa].exist == false) revert MahasiswaNotFound();
