@@ -1,0 +1,39 @@
+{
+  "name": "absensi-kelas",
+  "version": "1.0.0",
+  "description": "contoh absensi kelas",
+  "keywords": ["absensi kelas", "smart contract", "blockchain", "evm"],
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@ensdomains/ens": "0.4.5",
+    "@ensdomains/resolver": "0.2.4",
+    "cli-progress": "^3.12.0",
+    "eth-crypto": "^2.6.0",
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.3.10"
+  },
+  "devDependencies": {
+    "@defi-wonderland/smock": "^2.3.5",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.8",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@nomiclabs/hardhat-etherscan": "^3.1.7",
+    "@nomiclabs/hardhat-waffle": "^2.0.6",
+    "@typechain/ethers-v5": "^10.1.0",
+    "@typechain/hardhat": "^6.1.2",
+    "@types/chai": "^4.2.0",
+    "@types/cli-progress": "^3.11.0",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "^12.0.0",
+    "@types/sinon-chai": "3.2.9",
+    "chai": "^4.2.0",
+    "ethereum-waffle": "^4.0.0",
+    "ethers": "^5.7.2",
+    "hardhat": "^2.14.1",
+    "hardhat-gas-reporter": "^1.0.8",
+    "solidity-coverage": "^0.8.0",
+    "ts-node": "^8.0.0",
+    "typechain": "^8.1.0",
+    "typescript": ">=4.5.0"
+  }
+}
